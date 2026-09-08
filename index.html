@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carnet Spedizioni</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/module/index.js" type="module"></script>
     <style>
         * {
             margin: 0;
@@ -16,7 +15,6 @@
             --primary: #2563eb;
             --primary-dark: #1e40af;
             --success: #10b981;
-            --warning: #f59e0b;
             --danger: #ef4444;
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
@@ -27,14 +25,13 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            color: var(--gray-900);
         }
 
         .container {
@@ -58,43 +55,32 @@
             margin-bottom: 5px;
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
         .content {
             padding: 30px 20px;
-        }
-
-        /* LOGIN SCREEN */
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             font-weight: 600;
             font-size: 14px;
-            color: var(--gray-900);
         }
 
-        .form-group input, .form-group select {
+        .form-group input,
+        .form-group select {
             padding: 12px;
             border: 2px solid var(--gray-200);
             border-radius: 6px;
             font-size: 14px;
-            transition: border-color 0.2s;
         }
 
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: var(--primary);
         }
@@ -106,8 +92,8 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
             width: 100%;
+            transition: all 0.2s;
         }
 
         .btn-primary {
@@ -117,74 +103,39 @@
 
         .btn-primary:hover {
             background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-primary:disabled {
-            background: var(--gray-400);
-            cursor: not-allowed;
-            transform: none;
         }
 
         .btn-secondary {
             background: var(--gray-100);
             color: var(--gray-900);
-            border: 2px solid var(--gray-200);
             width: auto;
+            margin-top: 20px;
         }
 
-        .btn-secondary:hover {
-            background: var(--gray-200);
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border-left: 4px solid;
         }
 
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-            width: auto;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-            width: auto;
-        }
-
-        .error-message {
+        .error {
             background: #fee2e2;
             color: var(--danger);
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--danger);
+            border-color: var(--danger);
         }
 
-        .success-message {
+        .success {
             background: #dcfce7;
             color: var(--success);
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--success);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--gray-600);
+            border-color: var(--success);
         }
 
         .hidden {
             display: none;
         }
 
-        /* DASHBOARD */
         .dashboard {
             display: none;
         }
@@ -193,29 +144,16 @@
             display: block;
         }
 
-        .user-info {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .user-info h2 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .user-role {
-            font-size: 12px;
+        .user-badge {
+            display: inline-block;
             background: var(--primary);
             color: white;
-            display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
+            font-size: 12px;
             margin-top: 10px;
         }
 
-        /* CLIENTE DASHBOARD */
         .carnet-card {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -225,137 +163,41 @@
             text-align: center;
         }
 
-        .carnet-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
         .carnet-amount {
             font-size: 48px;
             font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .carnet-amount-small {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .progress-bar {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            height: 10px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: white;
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        /* ADMIN DASHBOARD */
-        .admin-section {
-            margin-bottom: 30px;
+            margin: 15px 0;
         }
 
         .section-title {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 15px;
-            color: var(--gray-900);
+            margin-top: 25px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--primary);
         }
 
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--gray-600);
-        }
-
-        .customer-list {
+        .customer-list,
+        .transaction-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .customer-item {
+        .customer-item,
+        .transaction-item {
             background: var(--gray-50);
             border: 1px solid var(--gray-200);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
         }
 
         .customer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .customer-name {
-            font-weight: 600;
-            color: var(--gray-900);
-        }
-
-        .customer-email {
-            font-size: 12px;
-            color: var(--gray-600);
-        }
-
-        .customer-balance {
-            font-size: 14px;
-            color: var(--primary);
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
@@ -363,6 +205,7 @@
             display: flex;
             gap: 8px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-small {
@@ -371,319 +214,145 @@
             width: auto;
         }
 
-        .transactions {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: var(--gray-50);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .transaction-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            flex: 1;
-        }
-
-        .transaction-date {
-            font-size: 13px;
+        .loading {
+            text-align: center;
+            padding: 20px;
             color: var(--gray-600);
         }
 
-        .transaction-desc {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-900);
-        }
-
-        .transaction-amount {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--danger);
-        }
-
-        .empty-state {
+        .empty {
             text-align: center;
             padding: 20px;
             color: var(--gray-600);
             font-size: 14px;
         }
-
-        .logout-btn {
-            margin-top: 20px;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                max-width: 100%;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .carnet-amount {
-                font-size: 40px;
-            }
-
-            .admin-actions {
-                flex-direction: column;
-            }
-
-            .admin-actions .btn {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- LOGIN SCREEN -->
-        <div id="loginScreen" class="login-screen">
-            <div class="header">
-                <h1>📦 Carnet Spedizioni</h1>
-                <p>Monitora le spedizioni</p>
-            </div>
-            <div class="content">
-                <div id="errorMessage" class="error-message hidden"></div>
-                <form id="loginForm" class="login-form">
+        <div class="header">
+            <h1>📦 Carnet Spedizioni</h1>
+            <p>Monitora le spedizioni</p>
+        </div>
+
+        <div class="content">
+            <!-- LOGIN -->
+            <div id="loginSection">
+                <div id="message" class="message hidden"></div>
+
+                <form id="loginForm">
                     <div class="form-group">
-                        <label for="loginType">Accedi come</label>
-                        <select id="loginType" required>
+                        <label for="roleSelect">Accedi come</label>
+                        <select id="roleSelect" required>
                             <option value="cliente">Cliente</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            placeholder="tua@email.com"
-                            required
-                        >
+                        <input type="email" id="email" required>
                     </div>
+
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            placeholder="La tua password"
-                            required
-                        >
+                        <input type="password" id="password" required>
                     </div>
+
                     <button type="submit" class="btn btn-primary">Accedi</button>
                 </form>
             </div>
-        </div>
 
-        <!-- CLIENTE DASHBOARD -->
-        <div id="clientDashboard" class="dashboard">
-            <div class="header">
-                <h1>📦 Carnet Spedizioni</h1>
-                <p id="userCompany" style="opacity: 0.9; font-size: 14px;">Caricamento...</p>
-            </div>
-            <div class="content">
-                <div class="user-info">
-                    <div class="user-email" id="userEmailDisplay"></div>
+            <!-- CLIENT DASHBOARD -->
+            <div id="clientSection" class="dashboard">
+                <div class="user-badge" id="userCompany"></div>
+                <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-200);">
+                    <small style="color: var(--gray-600);" id="userEmail"></small>
                 </div>
 
                 <div class="carnet-card">
-                    <div class="carnet-label">SALDO DISPONIBILE</div>
-                    <div class="carnet-amount" id="carnetBalance">€ 0,00</div>
-                    <div class="carnet-amount-small">
-                        Totale caricato: <strong id="carnetTotal">€ 0,00</strong>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 100%"></div>
+                    <div>SALDO DISPONIBILE</div>
+                    <div class="carnet-amount" id="saldo">€ 0,00</div>
+                    <div style="font-size: 14px; opacity: 0.9;">
+                        Totale: <strong id="totale">€ 0,00</strong>
                     </div>
                 </div>
 
-                <div>
-                    <div class="section-title">Ultime Transazioni</div>
-                    <div id="transactionsList" class="transactions">
-                        <div class="loading">Caricamento...</div>
-                    </div>
+                <div class="section-title">Transazioni</div>
+                <div id="clientTransactions" class="transaction-list">
+                    <div class="loading">Caricamento...</div>
                 </div>
 
-                <button id="logoutBtn" class="btn btn-secondary logout-btn">Esci</button>
+                <button id="logoutBtn" class="btn btn-secondary">Esci</button>
             </div>
-        </div>
 
-        <!-- ADMIN DASHBOARD -->
-        <div id="adminDashboard" class="dashboard">
-            <div class="header">
-                <h1>⚙️ Admin Panel</h1>
-                <p>Gestisci carnet e clienti</p>
-            </div>
-            <div class="content">
-                <div class="user-info">
-                    <div id="adminEmailDisplay"></div>
-                    <div class="user-role">Admin</div>
+            <!-- ADMIN DASHBOARD -->
+            <div id="adminSection" class="dashboard">
+                <div class="user-badge">🔐 Admin</div>
+
+                <div class="section-title">Clienti</div>
+                <button id="btnNewCustomer" class="btn btn-primary" style="margin-bottom: 15px;">+ Nuovo Cliente</button>
+
+                <div id="customersList" class="customer-list">
+                    <div class="loading">Caricamento...</div>
                 </div>
 
-                <div id="adminMessage" class="success-message hidden"></div>
+                <div class="section-title">Nuova Transazione</div>
+                <button id="btnNewTx" class="btn btn-primary" style="margin-bottom: 15px;">+ Registra Spedizione</button>
 
-                <!-- SEZIONE CLIENTI -->
-                <div class="admin-section">
-                    <div class="section-title">Clienti</div>
-                    <div class="admin-actions">
-                        <button id="btnAddCustomer" class="btn btn-primary btn-small">+ Nuovo Cliente</button>
-                    </div>
-                    <div id="customerList" class="customer-list">
-                        <div class="loading">Caricamento...</div>
-                    </div>
+                <div class="section-title">Storico</div>
+                <div id="adminTransactions" class="transaction-list">
+                    <div class="loading">Caricamento...</div>
                 </div>
 
-                <!-- SEZIONE TRANSAZIONI -->
-                <div class="admin-section">
-                    <div class="section-title">Registra Spedizione</div>
-                    <div class="admin-actions">
-                        <button id="btnAddTransaction" class="btn btn-primary btn-small">+ Nuova Transazione</button>
-                    </div>
-                </div>
-
-                <!-- SEZIONE STORICO -->
-                <div class="admin-section">
-                    <div class="section-title">Storico Transazioni</div>
-                    <div id="adminTransactionsList" class="transactions">
-                        <div class="loading">Caricamento...</div>
-                    </div>
-                </div>
-
-                <button id="adminLogoutBtn" class="btn btn-secondary logout-btn">Esci</button>
+                <button id="adminLogoutBtn" class="btn btn-secondary">Esci</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: Nuovo Cliente -->
-    <div id="modalNewCustomer" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Nuovo Cliente</span>
-                <button class="modal-close" onclick="closeModal('modalNewCustomer')">✕</button>
-            </div>
-            <form id="formNewCustomer" class="login-form">
-                <div class="form-group">
-                    <label for="newEmail">Email</label>
-                    <input type="email" id="newEmail" required>
-                </div>
-                <div class="form-group">
-                    <label for="newPassword">Password</label>
-                    <input type="password" id="newPassword" required>
-                </div>
-                <div class="form-group">
-                    <label for="newCompany">Nome Azienda</label>
-                    <input type="text" id="newCompany" required>
-                </div>
-                <div class="form-group">
-                    <label for="newCarnetAmount">Importo Carnet (€)</label>
-                    <input type="number" id="newCarnetAmount" step="0.01" value="200" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Crea Cliente</button>
-            </form>
+    <!-- MODALS -->
+    <div id="modalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; border-radius:12px; padding:30px; max-width:400px; width:90%; box-shadow:0 20px 25px rgba(0,0,0,0.2);">
+            <h3 id="modalTitle" style="margin-bottom:20px; font-size:18px;"></h3>
+            <form id="modalForm"></form>
         </div>
     </div>
 
-    <!-- MODAL: Nuova Transazione -->
-    <div id="modalNewTransaction" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Nuova Transazione</span>
-                <button class="modal-close" onclick="closeModal('modalNewTransaction')">✕</button>
-            </div>
-            <form id="formNewTransaction" class="login-form">
-                <div class="form-group">
-                    <label for="txCustomer">Cliente</label>
-                    <select id="txCustomer" required>
-                        <option value="">Seleziona cliente...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="txAmount">Importo (€)</label>
-                    <input type="number" id="txAmount" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="txDescription">Descrizione</label>
-                    <input type="text" id="txDescription" placeholder="es. Spedizione 001">
-                </div>
-                <button type="submit" class="btn btn-primary">Registra</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: Ricarica Carnet -->
-    <div id="modalRecharge" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Ricarica Carnet</span>
-                <button class="modal-close" onclick="closeModal('modalRecharge')">✕</button>
-            </div>
-            <form id="formRecharge" class="login-form">
-                <div class="form-group">
-                    <label id="rechargeCustomerLabel"></label>
-                </div>
-                <div class="form-group">
-                    <label for="rechargeAmount">Importo Ricarica (€)</label>
-                    <input type="number" id="rechargeAmount" step="0.01" value="100" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Ricarica</button>
-            </form>
-        </div>
-    </div>
-
-    <script type="module">
-        // ⚠️ CONFIGURA QUESTE VARIABILI
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // CONFIGURAZIONE
         const SUPABASE_URL = 'https://jocykxeqcrmbemaxjbnb.supabase.co/rest/v1/';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvY3lreGVxY3JtYmVtYXhqYm5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NDg0NTgsImV4cCI6MjEwNDQyNDQ1OH0.vFuY18hJg7eFCMEVP2Nh-NXfLcG_k1iGY1QxcuKBFKo';
-        const ADMIN_EMAIL = 'leonardo@seron.one'; // Cambia con la tua email admin
+        const ADMIN_EMAIL = 'leonardo@seron.one';
 
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/module/index.js';
-
-        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // Global state
-        let currentUser = null;
-        let currentUserType = null;
-        let currentCustomerId = null;
-        let customers = [];
-        let selectedCustomerForRecharge = null;
+        // Inizializza Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // DOM Elements
-        const loginScreen = document.getElementById('loginScreen');
-        const clientDashboard = document.getElementById('clientDashboard');
-        const adminDashboard = document.getElementById('adminDashboard');
+        const loginSection = document.getElementById('loginSection');
+        const clientSection = document.getElementById('clientSection');
+        const adminSection = document.getElementById('adminSection');
+        const messageEl = document.getElementById('message');
         const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const loginType = document.getElementById('loginType');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
 
-        function showError(msg) {
-            errorMessage.textContent = msg;
-            errorMessage.classList.remove('hidden');
+        let currentUser = null;
+        let customers = [];
+
+        // Show message
+        function showMessage(text, type) {
+            messageEl.textContent = text;
+            messageEl.className = 'message ' + type;
+            messageEl.classList.remove('hidden');
+            if (type === 'success') setTimeout(() => messageEl.classList.add('hidden'), 3000);
         }
 
-        function showSuccess(msg) {
-            const successEl = document.getElementById('adminMessage');
-            successEl.textContent = msg;
-            successEl.classList.remove('hidden');
-            setTimeout(() => successEl.classList.add('hidden'), 3000);
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
+        // Toggle sections
+        function showSection(section) {
+            loginSection.style.display = section === 'login' ? 'block' : 'none';
+            clientSection.classList.toggle('active', section === 'client');
+            adminSection.classList.toggle('active', section === 'admin');
         }
 
         // LOGIN
@@ -691,56 +360,43 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const type = loginType.value;
+            const role = document.getElementById('roleSelect').value;
 
-            errorMessage.classList.add('hidden');
-
-            // Se admin, verifica credenziali
-            if (type === 'admin' && email !== ADMIN_EMAIL) {
-                showError('Credenziali admin non valide');
+            // Check if admin
+            if (role === 'admin' && email !== ADMIN_EMAIL) {
+                showMessage('Email admin non valida', 'error');
                 return;
             }
 
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
 
-            if (error) {
-                showError(error.message);
-            } else {
                 currentUser = data.user;
-                currentUserType = type;
-                if (type === 'cliente') {
-                    showClientDashboard();
-                } else {
+                if (role === 'admin') {
                     showAdminDashboard();
+                } else {
+                    showClientDashboard();
                 }
+            } catch (err) {
+                showMessage(err.message, 'error');
             }
         });
 
         // LOGOUT
-        document.getElementById('logoutBtn').addEventListener('click', logout);
-        document.getElementById('adminLogoutBtn').addEventListener('click', logout);
+        logoutBtn.addEventListener('click', logout);
+        adminLogoutBtn.addEventListener('click', logout);
 
         async function logout() {
             await supabase.auth.signOut();
-            showLogin();
-        }
-
-        function showLogin() {
-            loginScreen.style.display = 'block';
-            clientDashboard.classList.remove('active');
-            adminDashboard.classList.remove('active');
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            errorMessage.classList.add('hidden');
+            showSection('login');
+            loginForm.reset();
         }
 
         // CLIENT DASHBOARD
         async function showClientDashboard() {
-            loginScreen.style.display = 'none';
-            clientDashboard.classList.add('active');
-            adminDashboard.classList.remove('active');
-
-            document.getElementById('userEmailDisplay').textContent = currentUser.email;
+            showSection('client');
+            document.getElementById('userEmail').textContent = currentUser.email;
 
             const { data: customer } = await supabase
                 .from('customers')
@@ -749,306 +405,231 @@
                 .single();
 
             if (customer) {
-                currentCustomerId = customer.id;
                 document.getElementById('userCompany').textContent = customer.company_name;
+                document.getElementById('saldo').textContent = `€ ${customer.carnet_balance.toFixed(2).replace('.', ',')}`;
+                document.getElementById('totale').textContent = `€ ${customer.carnet_total.toFixed(2).replace('.', ',')}`;
 
-                const balance = customer.carnet_balance || 0;
-                const total = customer.carnet_total || 0;
-                const percentage = total > 0 ? (balance / total) * 100 : 100;
+                const { data: txs } = await supabase
+                    .from('carnet_transactions')
+                    .select('*')
+                    .eq('customer_id', customer.id)
+                    .order('created_at', { ascending: false })
+                    .limit(10);
 
-                document.getElementById('carnetBalance').textContent = `€ ${balance.toFixed(2).replace('.', ',')}`;
-                document.getElementById('carnetTotal').textContent = `€ ${total.toFixed(2).replace('.', ',')}`;
-                document.getElementById('progressFill').style.width = percentage + '%';
-
-                await loadClientTransactions();
-            }
-        }
-
-        async function loadClientTransactions() {
-            const { data: transactions } = await supabase
-                .from('carnet_transactions')
-                .select('*')
-                .eq('customer_id', currentCustomerId)
-                .order('created_at', { ascending: false })
-                .limit(10);
-
-            const list = document.getElementById('transactionsList');
-            list.innerHTML = '';
-
-            if (transactions && transactions.length > 0) {
-                transactions.forEach(tx => {
-                    const date = new Date(tx.created_at).toLocaleDateString('it-IT');
-                    list.innerHTML += `
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-desc">${tx.description || 'Spedizione'}</div>
-                                <div class="transaction-date">${date}</div>
+                const txList = document.getElementById('clientTransactions');
+                txList.innerHTML = '';
+                if (txs && txs.length > 0) {
+                    txs.forEach(tx => {
+                        const date = new Date(tx.created_at).toLocaleDateString('it-IT');
+                        txList.innerHTML += `
+                            <div class="transaction-item">
+                                <div style="font-weight:600;">${tx.description || 'Spedizione'}</div>
+                                <div style="font-size:12px; color:var(--gray-600); margin-top:4px;">${date}</div>
+                                <div style="color:var(--danger); font-weight:600; margin-top:4px;">-€ ${tx.amount.toFixed(2).replace('.', ',')}</div>
                             </div>
-                            <div class="transaction-amount">-€ ${tx.amount.toFixed(2).replace('.', ',')}</div>
-                        </div>
-                    `;
-                });
-            } else {
-                list.innerHTML = '<div class="empty-state">Nessuna transazione ancora</div>';
+                        `;
+                    });
+                } else {
+                    txList.innerHTML = '<div class="empty">Nessuna transazione</div>';
+                }
             }
         }
 
         // ADMIN DASHBOARD
         async function showAdminDashboard() {
-            loginScreen.style.display = 'none';
-            clientDashboard.classList.remove('active');
-            adminDashboard.classList.add('active');
-
-            document.getElementById('adminEmailDisplay').textContent = currentUser.email;
-
-            await loadCustomers();
-            await loadAllTransactions();
+            showSection('admin');
+            loadAdminData();
         }
 
-        async function loadCustomers() {
-            const { data } = await supabase
-                .from('customers')
-                .select('*')
-                .order('created_at', { ascending: false });
+        async function loadAdminData() {
+            // Carica clienti
+            const { data: custs } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
+            customers = custs || [];
 
-            customers = data || [];
-
-            // Aggiorna select per transazioni
-            const select = document.getElementById('txCustomer');
-            select.innerHTML = '<option value="">Seleziona cliente...</option>';
-            customers.forEach(c => {
-                const option = document.createElement('option');
-                option.value = c.id;
-                option.textContent = `${c.company_name} (${c.email})`;
-                select.appendChild(option);
-            });
-
-            // Renderizza lista clienti
-            const list = document.getElementById('customerList');
-            list.innerHTML = '';
-
+            const custList = document.getElementById('customersList');
+            custList.innerHTML = '';
             if (customers.length === 0) {
-                list.innerHTML = '<div class="empty-state">Nessun cliente</div>';
-                return;
+                custList.innerHTML = '<div class="empty">Nessun cliente</div>';
+            } else {
+                customers.forEach(c => {
+                    custList.innerHTML += `
+                        <div class="customer-item">
+                            <div class="customer-header">
+                                <div>${c.company_name}</div>
+                                <div style="color:var(--primary); font-weight:600;">€ ${c.carnet_balance.toFixed(2).replace('.', ',')}</div>
+                            </div>
+                            <div style="font-size:12px; color:var(--gray-600); margin-bottom:8px;">${c.email}</div>
+                            <div class="customer-actions">
+                                <button class="btn btn-success btn-small" onclick="rechargeCustomer('${c.id}', '${c.company_name}')">Ricarica</button>
+                                <button class="btn btn-primary btn-small" onclick="deleteCustomer('${c.id}')">Elimina</button>
+                            </div>
+                        </div>
+                    `;
+                });
             }
 
-            customers.forEach(c => {
-                const balance = c.carnet_balance || 0;
-                const total = c.carnet_total || 0;
-                const percentage = total > 0 ? ((total - balance) / total * 100) : 0;
-
-                list.innerHTML += `
-                    <div class="customer-item">
-                        <div class="customer-header">
-                            <div>
-                                <div class="customer-name">${c.company_name}</div>
-                                <div class="customer-email">${c.email}</div>
-                            </div>
-                            <div class="customer-balance">€ ${balance.toFixed(2).replace('.', ',')}</div>
-                        </div>
-                        <div style="font-size: 12px; color: var(--gray-600); margin-bottom: 10px;">
-                            Consumato: ${percentage.toFixed(0)}% di € ${total.toFixed(2).replace('.', ',')}
-                        </div>
-                        <div class="customer-actions">
-                            <button class="btn btn-success btn-small" onclick="rechargeCustomer('${c.id}', '${c.company_name}')">Ricarica</button>
-                            <button class="btn btn-danger btn-small" onclick="deleteCustomer('${c.id}')">Elimina</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        async function loadAllTransactions() {
-            const { data: transactions } = await supabase
+            // Carica transazioni
+            const { data: txs } = await supabase
                 .from('carnet_transactions')
-                .select('*, customer_id')
+                .select('*')
                 .order('created_at', { ascending: false })
                 .limit(20);
 
-            const list = document.getElementById('adminTransactionsList');
-            list.innerHTML = '';
-
-            if (!transactions || transactions.length === 0) {
-                list.innerHTML = '<div class="empty-state">Nessuna transazione</div>';
-                return;
-            }
-
-            transactions.forEach(tx => {
-                const customer = customers.find(c => c.id === tx.customer_id);
-                const companyName = customer?.company_name || 'Sconosciuto';
-                const date = new Date(tx.created_at).toLocaleDateString('it-IT');
-
-                list.innerHTML += `
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-desc">${companyName}</div>
-                            <div class="transaction-date">${tx.description || 'Spedizione'} - ${date}</div>
+            const txList = document.getElementById('adminTransactions');
+            txList.innerHTML = '';
+            if (!txs || txs.length === 0) {
+                txList.innerHTML = '<div class="empty">Nessuna transazione</div>';
+            } else {
+                txs.forEach(tx => {
+                    const cust = customers.find(c => c.id === tx.customer_id);
+                    const date = new Date(tx.created_at).toLocaleDateString('it-IT');
+                    txList.innerHTML += `
+                        <div class="transaction-item">
+                            <div style="font-weight:600;">${cust?.company_name || 'Sconosciuto'}</div>
+                            <div style="font-size:12px; color:var(--gray-600); margin-top:4px;">${tx.description || 'Spedizione'} - ${date}</div>
+                            <div style="color:var(--danger); font-weight:600; margin-top:4px;">-€ ${tx.amount.toFixed(2).replace('.', ',')}</div>
                         </div>
-                        <div class="transaction-amount">-€ ${tx.amount.toFixed(2).replace('.', ',')}</div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
         }
 
         // ADMIN ACTIONS
-        document.getElementById('btnAddCustomer').addEventListener('click', () => {
-            openModal('modalNewCustomer');
-        });
+        document.getElementById('btnNewCustomer').addEventListener('click', () => {
+            showModal('Nuovo Cliente', `
+                <div class="form-group"><label>Email</label><input type="email" id="f_email" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="f_password" required></div>
+                <div class="form-group"><label>Azienda</label><input type="text" id="f_company" required></div>
+                <div class="form-group"><label>Carnet (€)</label><input type="number" id="f_carnet" step="0.01" value="200" required></div>
+                <button type="submit" class="btn btn-primary">Crea</button>
+            `, async (form) => {
+                const email = document.getElementById('f_email').value;
+                const password = document.getElementById('f_password').value;
+                const company = document.getElementById('f_company').value;
+                const carnet = parseFloat(document.getElementById('f_carnet').value);
 
-        document.getElementById('formNewCustomer').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('newEmail').value;
-            const password = document.getElementById('newPassword').value;
-            const company = document.getElementById('newCompany').value;
-            const amount = parseFloat(document.getElementById('newCarnetAmount').value);
+                try {
+                    const { error: authErr } = await supabase.auth.admin.createUser({
+                        email, password, email_confirm: true
+                    });
+                    if (authErr) throw authErr;
 
-            // Crea utente auth
-            const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-                email,
-                password,
-                email_confirm: true
-            });
+                    const { error: dbErr } = await supabase.from('customers').insert([{
+                        email, company_name: company, carnet_total: carnet, carnet_balance: carnet
+                    }]);
+                    if (dbErr) throw dbErr;
 
-            if (authError) {
-                showError(authError.message);
-                return;
-            }
-
-            // Aggiungi cliente nel database
-            const { error: dbError } = await supabase
-                .from('customers')
-                .insert([{
-                    email,
-                    company_name: company,
-                    carnet_total: amount,
-                    carnet_balance: amount
-                }]);
-
-            if (dbError) {
-                showError(dbError.message);
-            } else {
-                closeModal('modalNewCustomer');
-                showSuccess('Cliente creato con successo!');
-                document.getElementById('formNewCustomer').reset();
-                await loadCustomers();
-            }
-        });
-
-        document.getElementById('btnAddTransaction').addEventListener('click', () => {
-            openModal('modalNewTransaction');
-        });
-
-        document.getElementById('formNewTransaction').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const customerId = document.getElementById('txCustomer').value;
-            const amount = parseFloat(document.getElementById('txAmount').value);
-            const description = document.getElementById('txDescription').value;
-
-            if (!customerId) {
-                showError('Seleziona un cliente');
-                return;
-            }
-
-            // Aggiungi transazione
-            const { error: txError } = await supabase
-                .from('carnet_transactions')
-                .insert([{ customer_id: customerId, amount, description }]);
-
-            if (txError) {
-                showError(txError.message);
-                return;
-            }
-
-            // Aggiorna saldo cliente
-            const { error: updateError } = await supabase
-                .from('customers')
-                .update({ carnet_balance: supabase.raw(`carnet_balance - ${amount}`) })
-                .eq('id', customerId);
-
-            if (updateError) {
-                showError(updateError.message);
-            } else {
-                closeModal('modalNewTransaction');
-                showSuccess('Transazione registrata!');
-                document.getElementById('formNewTransaction').reset();
-                await loadCustomers();
-                await loadAllTransactions();
-            }
-        });
-
-        // Funzioni globali per gli onclick
-        window.rechargeCustomer = (customerId, companyName) => {
-            selectedCustomerForRecharge = customerId;
-            document.getElementById('rechargeCustomerLabel').textContent = `Ricarica per: ${companyName}`;
-            openModal('modalRecharge');
-        };
-
-        window.deleteCustomer = async (customerId) => {
-            if (!confirm('Sei sicuro? Questo eliminerà tutti i dati del cliente.')) return;
-
-            const { error } = await supabase
-                .from('customers')
-                .delete()
-                .eq('id', customerId);
-
-            if (error) {
-                showError(error.message);
-            } else {
-                showSuccess('Cliente eliminato!');
-                await loadCustomers();
-            }
-        };
-
-        document.getElementById('formRecharge').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const amount = parseFloat(document.getElementById('rechargeAmount').value);
-
-            const { error } = await supabase
-                .from('customers')
-                .update({
-                    carnet_balance: supabase.raw(`carnet_balance + ${amount}`),
-                    carnet_total: supabase.raw(`carnet_total + ${amount}`)
-                })
-                .eq('id', selectedCustomerForRecharge);
-
-            if (error) {
-                showError(error.message);
-            } else {
-                closeModal('modalRecharge');
-                showSuccess('Carnet ricaricato!');
-                document.getElementById('formRecharge').reset();
-                await loadCustomers();
-            }
-        });
-
-        // Chiudi modal al click esterno
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
+                    showMessage('Cliente creato!', 'success');
+                    closeModal();
+                    loadAdminData();
+                } catch (err) {
+                    showMessage(err.message, 'error');
                 }
             });
         });
 
-        // Inizializza
-        checkUser();
+        document.getElementById('btnNewTx').addEventListener('click', () => {
+            const opts = customers.map(c => `<option value="${c.id}">${c.company_name}</option>`).join('');
+            showModal('Nuova Transazione', `
+                <div class="form-group"><label>Cliente</label><select id="f_customer" required><option value="">-- Seleziona --</option>${opts}</select></div>
+                <div class="form-group"><label>Importo (€)</label><input type="number" id="f_amount" step="0.01" required></div>
+                <div class="form-group"><label>Descrizione</label><input type="text" id="f_desc" placeholder="es. Spedizione 001"></div>
+                <button type="submit" class="btn btn-primary">Registra</button>
+            `, async (form) => {
+                const custId = document.getElementById('f_customer').value;
+                const amount = parseFloat(document.getElementById('f_amount').value);
+                const desc = document.getElementById('f_desc').value;
 
-        async function checkUser() {
+                try {
+                    const { error: txErr } = await supabase.from('carnet_transactions').insert([{
+                        customer_id: custId, amount, description: desc
+                    }]);
+                    if (txErr) throw txErr;
+
+                    const { error: updErr } = await supabase
+                        .from('customers')
+                        .update({ carnet_balance: supabase.raw(`carnet_balance - ${amount}`) })
+                        .eq('id', custId);
+                    if (updErr) throw updErr;
+
+                    showMessage('Transazione registrata!', 'success');
+                    closeModal();
+                    loadAdminData();
+                } catch (err) {
+                    showMessage(err.message, 'error');
+                }
+            });
+        });
+
+        window.rechargeCustomer = (custId, name) => {
+            showModal(`Ricarica: ${name}`, `
+                <div class="form-group"><label>Importo (€)</label><input type="number" id="f_recharge" step="0.01" value="100" required></div>
+                <button type="submit" class="btn btn-primary">Ricarica</button>
+            `, async () => {
+                const amt = parseFloat(document.getElementById('f_recharge').value);
+                try {
+                    const { error } = await supabase
+                        .from('customers')
+                        .update({
+                            carnet_balance: supabase.raw(`carnet_balance + ${amt}`),
+                            carnet_total: supabase.raw(`carnet_total + ${amt}`)
+                        })
+                        .eq('id', custId);
+                    if (error) throw error;
+                    showMessage('Carnet ricaricato!', 'success');
+                    closeModal();
+                    loadAdminData();
+                } catch (err) {
+                    showMessage(err.message, 'error');
+                }
+            });
+        };
+
+        window.deleteCustomer = async (custId) => {
+            if (!confirm('Sei sicuro?')) return;
+            try {
+                const { error } = await supabase.from('customers').delete().eq('id', custId);
+                if (error) throw error;
+                showMessage('Cliente eliminato', 'success');
+                loadAdminData();
+            } catch (err) {
+                showMessage(err.message, 'error');
+            }
+        };
+
+        // MODAL
+        function showModal(title, html, onSubmit) {
+            document.getElementById('modalTitle').textContent = title;
+            const form = document.getElementById('modalForm');
+            form.innerHTML = html;
+            form.onsubmit = (e) => { e.preventDefault(); onSubmit(form); };
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modalOverlay') closeModal();
+        });
+
+        // Check auth on load
+        window.addEventListener('load', async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
                 currentUser = user;
-                currentUserType = user.email === ADMIN_EMAIL ? 'admin' : 'cliente';
-                if (currentUserType === 'admin') {
+                if (user.email === ADMIN_EMAIL) {
                     showAdminDashboard();
                 } else {
                     showClientDashboard();
                 }
             }
-        }
+        });
 
-        supabase.auth.onAuthStateChange((event, session) => {
+        supabase.auth.onAuthStateChange((event) => {
             if (event === 'SIGNED_OUT') {
-                showLogin();
+                showSection('login');
             }
         });
     </script>
